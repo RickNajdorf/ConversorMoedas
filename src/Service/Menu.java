@@ -12,21 +12,28 @@ public class Menu {
 
     public void exibeMenu(){
 
-        System.out.println("""
-                *********************************************************
-                Seja bem vindo ao Conversor de Moedas!
-                
-                1) Dólar =>> Peso argentino
-                2) Peso Argentino =>> Dólar
-                3) Dólar =>> Real brasileiro
-                4) Real brasileiro =>> Dólar
-                5) Dólar =>> Peso colombiano
-                6) Peso colombiano =>> Dólar
-                7) Sair
-                Escolha uma opção válida:
-                """);
-        int opcao = SCANNNER.nextInt();
-        System.out.println("**********************************************************");
+        while (true) {
+            System.out.println("""
+                    *********************************************************
+                    Seja bem vindo ao Conversor de Moedas!
+                    
+                    1) Dólar =>> Peso argentino
+                    2) Peso Argentino =>> Dólar
+                    3) Dólar =>> Real brasileiro
+                    4) Real brasileiro =>> Dólar
+                    5) Dólar =>> Peso colombiano
+                    6) Peso colombiano =>> Dólar
+                    7) Sair
+                    Escolha uma opção válida:
+                    **********************************************************
+                    """);
+            int opcao = SCANNNER.nextInt();
+            if (opcao == 7){
+                System.out.println("Encerrando o programa...");
+                break;
+            }
+            processaOpcao(opcao);
+        }
 
     }
 
@@ -34,8 +41,8 @@ public class Menu {
         System.out.println("Digite o valor que deseja converter: ");
         double taxa;
         double valor = SCANNNER.nextDouble();
-        String moedaEscolhida = "";
-        String moedaConversao = "";
+        String moedaEscolhida;
+        String moedaConversao;
         switch (opcao){
             case 1 -> {moedaEscolhida = "USD"; moedaConversao = "ARS";}
             case 2 -> {moedaEscolhida = "ARS"; moedaConversao = "USD";}
@@ -51,10 +58,9 @@ public class Menu {
         }
         this.json = CONSUMO_API.obterDados("https://v6.exchangerate-api.com/v6/6d30a12c182f166781b3ce3b/latest/" + moedaEscolhida);
         ConverteDados dados = GSON.fromJson(json, ConverteDados.class);
-        System.out.println(dados);
-        taxa = dados.conversiom_rates().get(moedaConversao);
+        taxa = dados.conversion_rates().get(moedaConversao);
         double resultado = valor * taxa;
-        System.out.printf("Valor convertido de [%s], para [%s]. Resultado: %.2f", moedaEscolhida, moedaConversao, resultado);
+        System.out.printf("Valor convertido de [%s], para [%s]. Resultado: %.2f\n", moedaEscolhida, moedaConversao, resultado);
 
     }
 }
