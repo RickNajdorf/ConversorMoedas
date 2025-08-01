@@ -1,3 +1,5 @@
 package Service;
 
-public record ConverteDados (String base, ConversionRates conversion_rates) {}
+import java.util.Map;
+
+public record ConverteDados (String base, Map<String, Double> conversiom_rates) {}
